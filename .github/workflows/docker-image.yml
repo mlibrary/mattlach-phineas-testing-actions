@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Docker Package Registry
+      uses: craftech-io/package-action@v3.1.0
+      with:
+        access_token: ${{ secrets.GITHUB_TOKEN }}
+        tags: |
+          latest
+          ${{ github.sha }}
