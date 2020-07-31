@@ -29,3 +29,5 @@ Accessing
 ---------
 
 Either way, you can view the results at <http://localhost:4567/>.
+
+[1]: https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
