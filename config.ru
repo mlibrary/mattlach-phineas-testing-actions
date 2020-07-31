@@ -8,4 +8,8 @@ get '/matt' do
   'Hello, Matt!'
 end
 
+get '/noah' do
+  'Hello, Noah!'
+end
+
 run Sinatra::Application
