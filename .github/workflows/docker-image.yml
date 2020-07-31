@@ -14,6 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: azure/setup-kubectl@v1
     - name: Docker Package Registry
       uses: craftech-io/package-action@v3.1.0
       with:
@@ -22,3 +23,13 @@ jobs:
         tags: |
           latest
           ${{ github.sha }}
+    - name: Authenticate with kubernetes
+      run: |
+        mkdir -p ${HOME}/.kube/certs/cluster
+        base64 -d ${{ secrets.KUBERNETES_CA }} > ${HOME}/.kube/certs/cluster/k8s-ca.crt
+        kubectl config set-cluster cluster --certificate-authority=${HOME}/.kube/certs/cluster/k8s-ca.crt --server=https://hatcher.kubernetes.lib.umich.edu
+        kubectl config set-credentials default --token=${{ secrets.KUBERNETES_TOKEN }}
+        kubectl config set-context default --cluster=cluster --user=default --namespace=mattlach-github-actions
+        kubectl config use-context default
+    - name: Rollout new deployment
+      run: kubectl set image deployment web web=docker.pkg.github.com/mlibrary/mattlach-phineas-testing-actions/web:${{ github.sha }}
