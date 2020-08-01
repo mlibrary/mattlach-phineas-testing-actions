@@ -4,12 +4,8 @@ get '/' do
   'Hello, World!'
 end
 
-get '/matt' do
-  'Hello, Matt!'
-end
-
-get '/noah' do
-  'Hello, Noah!'
+get '/:name' do |name|
+  "Hello, #{name.capitalize}!"
 end
 
 run Sinatra::Application

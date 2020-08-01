@@ -13,7 +13,7 @@ Running
 
 ### With docker
 
-    $ docker run -p 4567:4567 \
+    $ docker run -p 9292:9292 \
           docker.pkg.github.com/mlibrary/mattlach-phineas-testing-actions/web:latest
 
 Note: if the above complains about credentials, you probably need to
@@ -28,6 +28,6 @@ this docker image.
 Accessing
 ---------
 
-Either way, you can view the results at <http://localhost:4567/>.
+Either way, you can view the results at <http://localhost:9292/>.
 
 [1]: https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
