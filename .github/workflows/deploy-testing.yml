@@ -3,11 +3,6 @@ name: Deploy to Testing
 on:
   registry_package:
     types: [published, updated]
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: Package Tag
-        required: true
 
 jobs:
   deploy:
