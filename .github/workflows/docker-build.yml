@@ -1,0 +1,19 @@
+name: Docker Build Latest Commit
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Docker Package Registry
+      uses: craftech-io/package-action@v3.1.0
+      with:
+        access_token: ${{ secrets.GITHUB_TOKEN }}
+        image_name: web
+        tags: ${{ github.sha }}

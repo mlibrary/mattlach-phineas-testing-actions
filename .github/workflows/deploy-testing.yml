@@ -1,28 +1,19 @@
-name: Docker Image CI
+name: Deploy to Testing
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  registry_package:
+    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Package Tag
+        required: true
 
 jobs:
-
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
     - uses: azure/setup-kubectl@v1
-    - name: Docker Package Registry
-      uses: craftech-io/package-action@v3.1.0
-      with:
-        access_token: ${{ secrets.GITHUB_TOKEN }}
-        image_name: web
-        tags: |
-          latest
-          ${{ github.sha }}
     - name: Authenticate with kubernetes
       run: |
         mkdir -p ${HOME}/.kube/certs/cluster
@@ -31,5 +22,10 @@ jobs:
         kubectl config set-credentials default --token=${{ secrets.KUBERNETES_TOKEN }}
         kubectl config set-context default --cluster=cluster --user=default --namespace=mattlach-github-actions
         kubectl config use-context default
-    - name: Rollout new deployment
-      run: kubectl set image deployment web web=docker.pkg.github.com/mlibrary/mattlach-phineas-testing-actions/web:${{ github.sha }}
+    - name: Automatic Deploy
+      if: ${{ github.event.name == 'registry_package' }}
+      run: |
+        echo '${{ toJson( github.event ) }}'
+    - name: Manual Deploy
+      if: ${{ github.event.name == 'workflow_dispatch' }}
+      run: kubectl set image deployment web web=docker.pkg.github.com/mlibrary/mattlach-phineas-testing-actions/web:${{ github.event.inputs.tag }}
