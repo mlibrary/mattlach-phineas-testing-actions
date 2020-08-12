@@ -23,9 +23,9 @@ jobs:
         kubectl config set-context default --cluster=cluster --user=default --namespace=mattlach-github-actions
         kubectl config use-context default
     - name: Automatic Deploy
-      if: ${{ github.event.name == 'registry_package' }}
+      if: ${{ github.event_name == 'registry_package' }}
       run: |
         echo '${{ toJson( github.event ) }}'
     - name: Manual Deploy
-      if: ${{ github.event.name == 'workflow_dispatch' }}
+      if: ${{ github.event_name == 'workflow_dispatch' }}
       run: kubectl set image deployment web web=docker.pkg.github.com/mlibrary/mattlach-phineas-testing-actions/web:${{ github.event.inputs.tag }}

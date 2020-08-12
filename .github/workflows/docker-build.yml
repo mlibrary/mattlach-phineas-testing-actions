@@ -15,5 +15,5 @@ jobs:
       uses: craftech-io/package-action@v3.1.0
       with:
         access_token: ${{ secrets.GITHUB_TOKEN }}
-        image_name: web
+        image_name: testing
         tags: ${{ github.sha }}
