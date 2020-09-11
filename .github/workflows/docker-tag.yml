@@ -21,8 +21,9 @@ jobs:
       uses: actions/checkout@v2
     - name: Tag latest release in DockerHub
       run: |
-        docker tag mlibrary/mattlach-phineas-testing-actions:testing-${{ github.sha }} mlibrary/mattlach-phineas-testing-actions:${{ github.event.release.tag_name }}
-        docker tag mlibrary/mattlach-phineas-testing-actions:testing-${{ github.sha }} mlibrary/mattlach-phineas-testing-actions:latest
+        docker pull mlibrary/mattlach-phineas-testing-actions:testing-${{ github.sha }}
+        docker tag mattlach-phineas-testing-actions:testing-${{ github.sha }} mlibrary/mattlach-phineas-testing-actions:${{ github.event.release.tag_name }}
+        docker tag mattlach-phineas-testing-actions:testing-${{ github.sha }} mlibrary/mattlach-phineas-testing-actions:latest
     - name: Update DockerHub README
       uses: peter-evans/dockerhub-description@v2
       env:
