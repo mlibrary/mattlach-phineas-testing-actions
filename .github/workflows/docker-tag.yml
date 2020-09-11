@@ -17,6 +17,8 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Clone latest repository
+      uses: actions/checkout@v2
     - name: Tag latest release in DockerHub
       run: |
         echo docker tag mlibrary/mattlach-phineas-testing-actions:testing-${{ github.sha }} mlibrary/mattlach-phineas-testing-actions:latest
