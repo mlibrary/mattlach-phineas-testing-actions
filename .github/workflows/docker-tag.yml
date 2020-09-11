@@ -22,12 +22,7 @@ jobs:
     - name: Tag latest release in DockerHub
       run: |
         docker pull mlibrary/mattlach-phineas-testing-actions:testing-${{ github.sha }}
-        docker image ls
         docker tag mlibrary/mattlach-phineas-testing-actions:testing-${{ github.sha }} mlibrary/mattlach-phineas-testing-actions:${{ github.event.release.tag_name }}
+        docker push mlibrary/mattlach-phineas-testing-actions:${{ github.event.release.tag_name }}
         docker tag mlibrary/mattlach-phineas-testing-actions:testing-${{ github.sha }} mlibrary/mattlach-phineas-testing-actions:latest
-    - name: Update DockerHub README
-      uses: peter-evans/dockerhub-description@v2
-      env:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
-        DOCKERHUB_REPOSITORY: mlibrary/mattlach-phineas-testing-actions
+        docker push mlibrary/mattlach-phineas-testing-actions:latest
