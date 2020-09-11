@@ -1,8 +1,14 @@
 name: Deploy to Testing
 
 on:
-  registry_package:
-    types: [published, updated]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release (must match tag in DockerHub)
+        required: true
+  workflow_run:
+    workflows: [ 'Docker Build Latest Commit' ]
+    types: [ completed ]
 
 jobs:
   deploy:
@@ -18,9 +24,8 @@ jobs:
         kubectl config set-context default --cluster=cluster --user=default --namespace=mattlach-github-actions
         kubectl config use-context default
     - name: Automatic Deploy
-      if: ${{ github.event_name == 'registry_package' }}
-      run: |
-        echo '${{ toJson( github.event ) }}'
+      if: ${{ github.event_name == 'workflow_run' }}
+      run: kubectl set image deployment web web=mlibrary/mattlach-phineas-testing-actions:testing-${{ github.sha }}
     - name: Manual Deploy
       if: ${{ github.event_name == 'workflow_dispatch' }}
-      run: kubectl set image deployment web web=docker.pkg.github.com/mlibrary/mattlach-phineas-testing-actions/web:${{ github.event.inputs.tag }}
+      run: kubectl set image deployment web web=mlibrary/mattlach-phineas-testing-actions:${{ github.event.inputs.tag }}
