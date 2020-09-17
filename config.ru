@@ -1,7 +1,7 @@
 require 'sinatra'
 
 get '/' do
-  'Hello, World!'
+  'Hello, friend!'
 end
 
 get '/:name' do |name|
